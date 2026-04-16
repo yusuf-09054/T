@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>For You ❤️</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            text-align: center;
+            padding: 30px;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+            border: none;
+        }
+
+        button {
+            background: #ff4d6d;
+            color: white;
+            cursor: pointer;
+        }
+
+        h1 {
+            color: #ff4d6d;
+        }
+        .fade {
+    opacity: 0;
+    transition: opacity 2s;
+    margin: 20px;
+}
+#celebrationPage {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    background: black;
+    color: white;
+}
+
+.bigText {
+    font-size: 40px;
+    margin-top: 100px;
+    animation: zoom 1s infinite alternate;
+}
+
+.subText {
+    font-size: 20px;
+}
+
+@keyframes zoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.2); }
+}
+
+#confetti {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.nameText {
+    font-size: 30px;
+    margin-top: 10px;
+    color: pink;
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px pink; }
+    to { text-shadow: 0 0 25px red; }
+}
+.highlight {
+    color: red;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+
+    opacity: 0;
+    transform: scale(0.9);
+
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px red; }
+    to { text-shadow: 0 0 25px pink; }
+}
+
+.pulse {
+    animation: pulseAnim 1s infinite;
+}
+
+@keyframes pulseAnim {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+#nextBtn {
+    margin-top: 30px;
+    background: #ff4d6d;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    display: none;
+}
+#storyPage2 .fade {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+#nextBtn2 {
+    opacity: 0;
+    transition: opacity 1s;
+}
+#heartCanvas {
+    position: fixed;   /* 🔥 key fix */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+}
+    </style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div class="box" id="loginPage">
+    <h1>Only for You ❤️</h1>
+    <input type="text" id="name" placeholder="Enter your name">
+    <br>
+    <button onclick="login()">Enter 💖</button>
+</div>
+
+<!-- QUIZ -->
+<div class="box" id="quizPage" style="display:none;">
+    <h1>One Question ❤️</h1>
+
+    <p>What was the color of the dress we wore together?</p>
+
+    <input type="text" id="answer" placeholder="Your answer">
+    <br>
+
+    <button onclick="checkAnswer()">Submit</button>
+
+    <p id="hint" style="color:red;"></p>
+</div>
+
+<!-- SUCCESS -->
+<div class="box" id="successPage" style="display:none;">
+    <h1>❤️ You Remembered ❤️</h1>
+    <p>That moment… still means everything to me.</p>
+</div>
+<!-- FUN QUESTION PAGE -->
+<div class="box" id="funPage" style="display:none;">
+    <h1>One Honest Question 😏</h1>
+    <p>Do you miss me?</p>
+
+    <button onclick="yesAnswer()">Yes, I miss you ❤️</button>
+    <button id="noBtn">No, I don’t 😶</button>
+</div>
+<!-- LOVE METER PAGE -->
+<div class="box" id="lovePage" style="display:none;">
+    <h1>One Last Question ❤️</h1>
+    <p>How much do you love me? 😏</p>
+
+    <input type="range" min="0" max="100" value="50" id="loveRange" oninput="updateLove()">
+
+    <h2 id="loveText">50%</h2>
+<button type="button" onclick="finalMessage()">Submit ❤️</button>
+
+</div>
+
+<!-- FINAL PAGE -->
+<div class="box" id="finalPage" style="display:none;">
+    <h1>💖</h1>
+    <p id="finalText"></p>
+</div>
+<!-- MARRIAGE PAGE -->
+<div class="box" id="marryPage" style="display:none;">
+    <h1>One Last Question 💍</h1>
+    <p>Will you marry me?</p>
+
+    <button onclick="yesMarry()">Yes, I will ❤️</button>
+    <button id="noMarry">No 💔</button>
+</div>
+<!-- HEART BREAK PAGE -->
+<div class="box" id="heartBreakPage" style="display:none;">
+    <h1>💔</h1>
+    <p>My heart just broke... 😭</p>
+    <p>Please click YES and come back to me ❤️</p>
+    <p>You really chose NO? 😭</p>
+<p>Try again… I’ll be waiting ❤️</p>
+
+    <button onclick="goBack()">Okay 😢</button>
+</div>
+<!-- CELEBRATION PAGE -->
+<div id="celebrationPage" style="display:none; text-align:center;">
+
+    <h1 class="bigText">❤️ SHE SAID YES ❤️</h1>
+    <h2 class="nameText">Tasmiya 💖</h2>
+    <p class="subText">This is the happiest moment of my life 😭</p>
+
+    <canvas id="confetti"></canvas>
+
+</div>
+
+</div>
+<!-- STORY PAGE -->
+<div class="box" id="storyPage" style="display:none;">
+
+    <h1>Our Story ❤️</h1>
+
+    <p class="fade">It all started in an exam hall…</p>
+
+    <p class="fade">You were sitting on my right side… wearing a black dress 🖤</p>
+
+    <p class="fade">That moment… I didn’t know you would become my everything…</p>
+
+    <p class="fade">You asked me for an eraser…</p>
+
+    <p class="fade">I tried to see your name on the paper… but I couldn’t…</p>
+
+    <p class="fade">After that day… I didn’t see you again…</p>
+
+    <p class="fade">Until one day in 3rd year… I saw you near my class…</p>
+
+    <p class="fade">I stood there… just to see you…</p>
+
+    <p class="fade">And I noticed… you were seeing me too… ❤️</p>
+
+    <p class="fade">The next day… I found your name… Tasmiya 💖</p>
+
+    <p class="fade">I searched for you everywhere… but couldn’t find you…</p>
+
+    <p class="fade">Then one day… near the stairs…</p>
+
+    <p class="fade">You walked with your friends…</p>
+
+    <p class="fade">That innocent look… those eyes…</p>
+
+    <p class="fade">It felt like a slow-motion romantic scene 🎬</p>
+
+    <p class="fade">And then… something I never expected…</p>
+
+    <p class="fade">I got a request… from YOU 😭❤️</p>
+
+    <p class="fade">That moment… I was the happiest person alive…</p>
+
+    <p class="fade">Our conversation started… and everything changed…</p>
+
+    <p class="fade">One day… I wanted to see you again in that black dress 🖤</p>
+
+    <p class="fade">But that day… things went wrong…</p>
+
+    <p class="fade">There was a fight… people against me…</p>
+
+    <p class="fade">And then… you called me… “En Ammu…” ❤️</p>
+
+    <p class="fade">That one word… melted everything inside me…</p>
+
+    <p class="fade">I asked you… “Are you in love with me?”</p>
+
+    <p class="fade highlight">And you said… YES… I LOVE YOU ❤️</p>
+
+    <!-- NEXT BUTTON -->
+    <button id="nextBtn" style="display:none;" onclick="nextPage()">Next ➡️</button>
+    <audio id="loveSong">
+        <source src="./Gehra Hua Dhurandhar 128 Kbps.mp3" type="audio/mpeg">
+    </audio>
+
+</div>
+<!-- STORY PAGE 2 -->
+<div class="box" id="storyPage2" style="display:none;">
+
+<p class="fade">after that the love goes on we gone to park and theatres and that 1st kiss in the 1st dating in the inox</p>
+
+<p class="fade">she gifted me a watch with a card that was unforgettable that moment with some embarrassing moments too</p>
+
+<p class="fade">and we get more close</p>
+
+<p class="fade">we gone to bengaluru and had a life of 2 days that was a 20 years for me</p>
+
+<p class="fade">and we gone to yercaud twice and had more happiest moments</p>
+
+<p class="fade">and finally the moment came that i going to leave the college</p>
+
+<p class="fade">that evening we cried alot alotttttttttttttttttttt</p>
+
+<p class="fade">and we promised we will get married and have 2 kids</p>
+
+<p class="fade">and we dont fight for silly reasons and no fights for some 3rd persons and no 3rd persons in our love life</p>
+
+<p class="fade">and finally came a big day,I came to your home and saw ur house and ur family and got more attached to u and made you as my life</p>
+
+<p class="fade">and now we are broke for some reasons only ,we know how we feel and we know this can be fixed</p>
+
+<p class="fade">the beautiful moments we had for those 2yrs that will be extended for those remaining life </p>
+
+<p class="fade highlight">I promise rii Chand uhh kuttyyyy... I will wait for you u just come to me I will solve everything just come dont think much I'm here ur paapu is here come... I will take care of you ❤️</p>
+
+<button id="nextBtn2" style="display:none;" onclick="finalLovePage()">Next ➡️</button>
+
+</div>
+<!-- FINAL PAGE -->
+<div id="finalLovePage" style="display:none; text-align:center; position:relative;">
+
+    <h1 style="position:relative; z-index:2;">❤️ I LOVE YOU JAANU ❤️</h1>
+
+    <img src="./WhatsApp Image 2026-04-16 at 3.31.49 PM.jpeg" 
+         style="width:200px; border-radius:20px; margin:20px; position:relative; z-index:2;">
+
+    <p style="font-size:20px; position:relative; z-index:2;">
+        Marry me… come to me ❤️
+    </p>
+
+    <canvas id="heartCanvas"></canvas>
+
+</div>
+
+<script>
+function login() {
+   var name = document.getElementById("name").value.trim().toLowerCase();
+
+if(name === "tasmiya") {
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("quizPage").style.display = "block";
+    } else {
+        alert("Only she can enter ❤️");
+    }
+}
+
+function checkAnswer() {
+    var ans = document.getElementById("answer").value.toLowerCase();
+
+    if(ans === "black") {
+        document.getElementById("quizPage").style.display = "none";
+        document.getElementById("successPage").style.display = "block";
+    } else {
+        document.getElementById("hint").innerText = "Hint: Think dark 🖤";
+    }
+}
+function checkAnswer() {
+    var ans = document.getElementById("answer").value.toLowerCase();
+
+    if(ans === "black") {
+        document.getElementById("quizPage").style.display = "none";
+        document.getElementById("funPage").style.display = "block";
+    } else {
+        document.getElementById("hint").innerText = "Hint: Think dark 🖤";
+    }
+}
+
+var noBtn = document.getElementById("noBtn");
+
+noBtn.addEventListener("mouseover", function() {
+    var x = Math.random() * window.innerWidth - 100;
+    var y = Math.random() * window.innerHeight - 100;
+
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
+function yesAnswer() {
+    alert("I knew it 😌❤️");
+     document.getElementById("funPage").style.display = "none";
+    document.getElementById("lovePage").style.display = "block";
+}
+setTimeout(() => {
+    var noBtn = document.getElementById("noBtn");
+
+    noBtn.addEventListener("mouseover", function() {
+        var x = Math.random() * (window.innerWidth - 100);
+        var y = Math.random() * (window.innerHeight - 100);
+
+        noBtn.style.position = "absolute";
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+    });
+}, 500);
+function updateLove() {
+    var val = document.getElementById("loveRange").value;
+    var text = document.getElementById("loveText");
+
+    if(val < 100) {
+        text.innerText = val + "% 😏 Not enough...";
+    } else {
+        text.innerText = "100% ❤️ I knew it!";
+    }
+}
+
+function finalMessage() {
+    var val = parseInt(document.getElementById("loveRange").value);
+    var text = document.getElementById("loveText");
+
+    console.log("Slider value:", val); // debug
+
+    if(val !== 100) {
+        text.innerText = "😏 Drag more… I know you love me ❤️";
+        return false; // 🔥 double safety
+    }
+
+    // ONLY here navigation happens
+    document.getElementById("lovePage").style.display = "none";
+    document.getElementById("marryPage").style.display = "block";
+
+    return true;
+}
+setTimeout(() => {
+    var noBtn = document.getElementById("noMarry");
+
+    noBtn.addEventListener("click", function() {
+        document.getElementById("marryPage").style.display = "none";
+        document.getElementById("heartBreakPage").style.display = "block";
+    });
+}, 500);
+function yesMarry() {
+    document.getElementById("marryPage").style.display = "none";
+    document.getElementById("celebrationPage").style.display = "block";
+
+    startCelebration();
+
+    // After 5 seconds → go to story
+    setTimeout(() => {
+        document.getElementById("celebrationPage").style.display = "none";
+        document.getElementById("storyPage").style.display = "block";
+        startStory();
+    }, 5000);
+}
+function startStory() {
+    var song = document.getElementById("loveSong");
+    if(song) song.play();
+
+    var lines = document.querySelectorAll(".fade");
+    var nextBtn = document.getElementById("nextBtn");
+
+    lines.forEach((line, index) => {
+        setTimeout(() => {
+            line.style.opacity = 1;
+
+            // 🎆 FIREWORKS when "I LOVE YOU" line comes
+            if(line.classList.contains("highlight")) {
+                startCelebration();
+
+                // ✅ SHOW BUTTON HERE (perfect timing)
+                setTimeout(() => {
+                    nextBtn.style.display = "inline-block";
+                }, 1000);
+            }
+
+        }, index * 2000);
+    });
+    if(line.classList.contains("highlight")) {
+
+    startCelebration();
+
+    let text = line.innerText;
+    line.innerText = "";
+    line.style.opacity = 1;
+    line.classList.add("pulse");
+
+    let i = 0;
+
+    function typeEffect() {
+        if(i < text.length) {
+            line.innerText += text.charAt(i);
+            i++;
+            setTimeout(typeEffect, 40); // speed
+        } else {
+            // show button after typing ends
+            setTimeout(() => {
+                nextBtn.style.display = "inline-block";
+                nextBtn.style.opacity = 1;
+            }, 800);
+        }
+    }
+
+    typeEffect();
+}
+}
+function nextPage() {
+    alert("More story coming... ❤️");
+    // later we will replace this with your next part
+}
+function goBack() {
+    document.getElementById("heartBreakPage").style.display = "none";
+    document.getElementById("marryPage").style.display = "block";
+}
+function startCelebration() {
+    var canvas = document.getElementById("confetti");
+    var ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // 📳 VIBRATION (mobile)
+    if(navigator.vibrate) {
+        navigator.vibrate([200, 100, 200]);
+    }
+
+    let hearts = [];
+    let fireworks = [];
+
+    // Create hearts
+    for(let i = 0; i < 50; i++) {
+        hearts.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            dy: Math.random() * 2 + 1,
+            size: Math.random() * 20 + 10
+        });
+    }
+
+    function drawHeart(x, y, size) {
+        ctx.fillStyle = "pink";
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.bezierCurveTo(x, y - size/2, x - size, y - size/2, x - size, y);
+        ctx.bezierCurveTo(x - size, y + size/2, x, y + size, x, y + size);
+        ctx.bezierCurveTo(x, y + size, x + size, y + size/2, x + size, y);
+        ctx.bezierCurveTo(x + size, y - size/2, x, y - size/2, x, y);
+        ctx.fill();
+    }
+
+    // Create fireworks
+    function createFirework() {
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * canvas.height / 2;
+
+        for(let i = 0; i < 20; i++) {
+            fireworks.push({
+                x: x,
+                y: y,
+                dx: (Math.random() - 0.5) * 5,
+                dy: (Math.random() - 0.5) * 5,
+                life: 50
+            });
+        }
+    }
+
+    setInterval(createFirework, 800);
+
+    function update() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // ❤️ hearts
+        hearts.forEach(h => {
+            drawHeart(h.x, h.y, h.size);
+            h.y -= h.dy;
+
+            if(h.y < 0) h.y = canvas.height;
+        });
+
+        // 🎆 fireworks
+        fireworks.forEach((f, index) => {
+            ctx.fillStyle = "yellow";
+            ctx.fillRect(f.x, f.y, 3, 3);
+
+            f.x += f.dx;
+            f.y += f.dy;
+            f.life--;
+
+            if(f.life <= 0) {
+                fireworks.splice(index, 1);
+            }
+        });
+
+        requestAnimationFrame(update);
+    }
+
+    update();
+}
+var song = document.getElementById("loveSong");
+if(song) song.play();
+function nextPage() {
+    document.getElementById("storyPage").style.display = "none";
+    document.getElementById("storyPage2").style.display = "block";
+    startStory2();
+}
+function startStory2() {
+    var lines = document.querySelectorAll("#storyPage2 .fade");
+    var btn = document.getElementById("nextBtn2");
+
+    lines.forEach((line, index) => {
+        // reset (important if reused)
+        line.style.opacity = 0;
+        line.style.transform = "translateY(20px)";
+
+        setTimeout(() => {
+            line.style.opacity = 1;
+            line.style.transform = "translateY(0)";
+        }, index * 1500);
+    });
+
+    // show button earlier
+    setTimeout(() => {
+        btn.style.display = "inline-block";
+        btn.style.opacity = 1;
+    }, (lines.length - 2) * 1500);
+}
+function finalLovePage() {
+    document.getElementById("storyPage2").style.display = "none";
+    document.getElementById("finalLovePage").style.display = "block";
+    floatingHearts();
+}
+function floatingHearts() {
+    var canvas = document.getElementById("heartCanvas");
+    var ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let hearts = [];
+
+    for(let i = 0; i < 20; i++) {
+        hearts.push({
+            x: Math.random() * canvas.width,
+            y: canvas.height,
+            size: Math.random() * 20 + 10,
+            speed: Math.random() * 2 + 1
+        });
+    }
+
+    function drawHeart(x, y, size) {
+        ctx.fillStyle = "red";
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.bezierCurveTo(x, y - size/2, x - size, y - size/2, x - size, y);
+        ctx.bezierCurveTo(x - size, y + size/2, x, y + size, x, y + size);
+        ctx.bezierCurveTo(x, y + size, x + size, y + size/2, x + size, y);
+        ctx.bezierCurveTo(x + size, y - size/2, x, y - size/2, x, y);
+        ctx.fill();
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        hearts.forEach(h => {
+            drawHeart(h.x, h.y, h.size);
+            h.y -= h.speed;
+
+            if(h.y < 0) {
+                h.y = canvas.height;
+                h.x = Math.random() * canvas.width;
+            }
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+}
+</script>
+
+
+
+</body>
+</html>
